@@ -85,7 +85,8 @@ const services = {
               args: command.get(
                 _.merge(value, {
                   rmOnShutdown: cfg.rmOnShutdown,
-                  privileged: cfg.privileged === false ? false : true
+                  privileged: cfg.privileged === false ? false : true,
+                  networkHost: cfg.networkHost === true ? true : false,
                 }),
                 name,
                 null
