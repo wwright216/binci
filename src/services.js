@@ -101,8 +101,8 @@ const services = {
    * @returns {object} promise
    */
   run: (svc) => {
-    return proc.exec('docker network create --attachable binci_network').then(() => {
-      const errors = []
+    const errors = []
+    return proc.exec('docker network create --attachable binci_network').then(() => {      
       return Promise.all(
         _.map((cur) => {
           let curName = command.getName(cur.name, { persist: cur.persist })
