@@ -103,7 +103,7 @@ const command = {
    * @returns {array} Link arguments
    */
   getLinks: (cfg) => _.chain(_.pipe([_.toPairs, _.head, ([key, value]) => {
-    return [cfg.networkHost === true ? undefined : '--link', `${command.getName(key, value)}:${key}`].filter(item => Boolean(item))
+    return ['--link', `${command.getName(key, value)}:${key}`]
   }]))(cfg.services || []),
   /**
    * Returns full command arguments array
