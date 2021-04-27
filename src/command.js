@@ -130,6 +130,7 @@ const command = {
       args = ['run', '-d']
       if (cfg.privileged !== false) args.push('--privileged')
       if (!cfg.rmOnShutdown) args.push('--rm')
+      if (cfg.networkHost === true) args.push('--network=bridge')
     }
     // Has user config
     if (cfg.user) args.push(`--user=${command.parseHostEnvVars(cfg.user)}`)
