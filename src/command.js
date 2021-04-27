@@ -103,7 +103,8 @@ const command = {
    * @returns {array} Link arguments
    */
   getLinks: (cfg) => _.chain(_.pipe([_.toPairs, _.head, ([key, value]) => {
-    return [`${command.getName(key, value)}:${key}`]
+    return []
+    // return [`${command.getName(key, value)}:${key}`]
   }]))(cfg.services || []),
   /**
    * Returns full command arguments array
