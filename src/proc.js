@@ -2,7 +2,7 @@
 
 const cp = require('child_process')
 const Promise = require('bluebird')
-const output = require('./output')
+
 const proc = {
   /**
    * Runs a process and returns promise which reolves or rejects based on process exit
@@ -14,7 +14,6 @@ const proc = {
     const opts = { env: process.env, cwd: process.env.HOME }
     opts.stdio = silent ? [null, null, null] : ['inherit', process.stdout, process.stdout]
     // Start
-    console.log(args, opts)
     const p = cp.spawn('docker', args, opts)
     // Handle close
     p.on('close', (code) => {

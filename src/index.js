@@ -19,7 +19,7 @@ const tmpdir = require('./tempdir')()
 
 const dewindowize = require('./dewindowize')
 
-global.instanceId = require('shortid').generate()
+global.instanceId = require('shortid').generate().toLowerCase()
 
 const instance = {
   checkForUpdates: () => {
