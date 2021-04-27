@@ -129,7 +129,6 @@ const command = {
       // Running a service
       args = ['run', '-d']
       if (cfg.privileged !== false) args.push('--privileged')
-      if (cfg.networkHost === true) args.push('--network=host')
       if (!cfg.rmOnShutdown) args.push('--rm')
     }
     // Has user config
