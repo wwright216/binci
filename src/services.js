@@ -105,7 +105,7 @@ const services = {
     return Promise.all(
       _.map((cur) => {
         let curName = command.getName(cur.name, { persist: cur.persist })
-        proc.exec('docker network create -d overlay my-overlay').then(() => {
+        proc.exec('docker network create my-overlay').then(() => {
         return proc.exec(`docker ps -f name=${curName} -q`).then((res) => {
           if (res && res.toString().length) return Promise.resolve() // Already running, resolve
           return proc
@@ -135,6 +135,7 @@ const services = {
    */
   stop: (cfg) => {
     const errors = []
+    proc.exec('docker network rm my-overlay')
     return Promise.all(
       _.pipe([
         _.filter((svc) => _.test(/bc_/, svc.name)),
