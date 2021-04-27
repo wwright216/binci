@@ -122,7 +122,7 @@ const command = {
       // Running the main project container
       args = ['run', '--rm', '-v', `${cwd}:${workDir}:cached`, '-v', `${tmpdir}:${tmpdir}`, '-w', workDir]
       if (cfg.privileged !== false) args.push('--privileged')
-      if (cfg.networkHost === true) args.push('--network=host')
+      if (cfg.networkHost === true) args.push('--network=bridge')
       /* istanbul ignore else */
       if (process.stdout.isTTY) args.push('-it')
     } else {
