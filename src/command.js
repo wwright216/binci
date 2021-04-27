@@ -103,7 +103,7 @@ const command = {
    * @returns {array} Link arguments
    */
   getLinks: (cfg) => _.chain(_.pipe([_.toPairs, _.head, ([key, value]) => {
-    return ['--link', `${command.getName(key, value)}:${key}`]
+    return [`${command.getName(key, value)}:${key}`]
   }]))(cfg.services || []),
   /**
    * Returns full command arguments array
@@ -122,7 +122,7 @@ const command = {
       // Running the main project container
       args = ['run', '--rm', '-v', `${cwd}:${workDir}:cached`, '-v', `${tmpdir}:${tmpdir}`, '-w', workDir]
       if (cfg.privileged !== false) args.push('--privileged')
-      if (cfg.networkHost === true) args.push('--network=bridge')
+      if (cfg.networkHost === true) args.push('--network=host')
       /* istanbul ignore else */
       if (process.stdout.isTTY) args.push('-it')
     } else {
@@ -130,7 +130,7 @@ const command = {
       args = ['run', '-d']
       if (cfg.privileged !== false) args.push('--privileged')
       if (!cfg.rmOnShutdown) args.push('--rm')
-      if (cfg.networkHost === true) args.push('--network=bridge')
+      if (cfg.networkHost === true) args.push('--network=host')
     }
     // Has user config
     if (cfg.user) args.push(`--user=${command.parseHostEnvVars(cfg.user)}`)
