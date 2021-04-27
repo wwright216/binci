@@ -103,7 +103,7 @@ const command = {
    * @returns {array} Link arguments
    */
   getLinks: (cfg) => _.chain(_.pipe([_.toPairs, _.head, ([key, value]) => {
-    return ['--link', `${command.getName(key, value)}:${key}`]
+    return [cfg.networkHost === true ? '' : '--link', `${command.getName(key, value)}:${key}`]
   }]))(cfg.services || []),
   /**
    * Returns full command arguments array
@@ -129,6 +129,7 @@ const command = {
       // Running a service
       args = ['run', '-d']
       if (cfg.privileged !== false) args.push('--privileged')
+      if (cfg.networkHost === true) args.push('--network=host')
       if (!cfg.rmOnShutdown) args.push('--rm')
     }
     // Has user config
