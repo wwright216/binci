@@ -122,14 +122,14 @@ const command = {
       // Running the main project container
       args = ['run', '--rm', '-v', `${cwd}:${workDir}:cached`, '-v', `${tmpdir}:${tmpdir}`, '-w', workDir]
       if (cfg.privileged !== false) args.push('--privileged')
-      if (cfg.networkHost === true) args.push('--network=my-overlay')
+      if (cfg.networkHost === true) args.push('--network=binci_network')
       /* istanbul ignore else */
       if (process.stdout.isTTY) args.push('-it')
     } else {
       // Running a service
       args = ['run', '-d']
       if (cfg.privileged !== false) args.push('--privileged')
-      if (cfg.networkHost === true) args.push('--network=my-overlay')
+      if (cfg.networkHost === true) args.push('--network=binci_network')
       if (!cfg.rmOnShutdown) args.push('--rm')
     }
     // Has user config
