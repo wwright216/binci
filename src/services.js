@@ -101,30 +101,31 @@ const services = {
    * @returns {object} promise
    */
   run: (svc) => {
-    const errors = []
-    proc.exec('docker network create --attachable binci_network')
-    return Promise.all(
-      _.map((cur) => {
-        let curName = command.getName(cur.name, { persist: cur.persist })
-        return proc.exec(`docker ps -f name=${curName} -q`).then((res) => {
-          if (res && res.toString().length) return Promise.resolve() // Already running, resolve
-          return proc
-            .run(cur.args, true)
-            .then(() =>
-              services.running.push({
-                name: curName,
-                stopTimeSecs: cur.stopTimeSecs
-              })
-            )
-            .catch(() => errors.push(cur.name))
-        })
-      }, svc)
-    ).then(() => {
-      const startError = new Error()
-      if (errors.length) {
-        startError.svcs = errors
-        throw startError
-      }
+    proc.exec('docker network create --attachable binci_network').then(() => {
+      const errors = []
+      return Promise.all(
+        _.map((cur) => {
+          let curName = command.getName(cur.name, { persist: cur.persist })
+          return proc.exec(`docker ps -f name=${curName} -q`).then((res) => {
+            if (res && res.toString().length) return Promise.resolve() // Already running, resolve
+            return proc
+              .run(cur.args, true)
+              .then(() =>
+                services.running.push({
+                  name: curName,
+                  stopTimeSecs: cur.stopTimeSecs
+                })
+              )
+              .catch(() => errors.push(cur.name))
+          })
+        }, svc)
+      ).then(() => {
+        const startError = new Error()
+        if (errors.length) {
+          startError.svcs = errors
+          throw startError
+        }
+      })
     })
   },
   /**
@@ -132,8 +133,7 @@ const services = {
    * @returns {object} promise
    */
   stop: (cfg) => {
-    const errors = []
-    proc.exec('docker network rm binci_network')
+    const errors = []    
     return Promise.all(
       _.pipe([
         _.filter((svc) => _.test(/bc_/, svc.name)),
@@ -152,12 +152,15 @@ const services = {
         )
       ])(services.running)
     ).then(() => {
+      proc.exec('docker network rm binci_network').then(() => {
       const stopError = new Error()
       /* istanbul ignore next: this is actually tested, istanbul... */
       if (errors.length) {
         stopError.svcs = errors
         throw stopError
       }
+      })
+
     })
   }
 }
